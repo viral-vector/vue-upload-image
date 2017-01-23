@@ -1,0 +1,36 @@
+{
+  "name": "vue-image-uploader",
+  "version": "1.0.0",
+  "description": "Configurable image preview & ajax up-loader",
+  "main": "dist/uploader.vue",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/viral-vector/vue-image-uploader.git"
+  },
+  "keywords": [
+    "vue-image-upload",
+    "vue.js image uploader",
+    "vue.js image",
+    "vue image.js",
+    "vue.js uploader",
+    "vue.js",
+    "image",
+    "upload",
+    "multiple",
+    "component",
+    "vue-component",
+    "vue-upload-component"
+  ],
+  "author": {
+    "name": "viral_vector",
+    "email": "vectorviral@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/viral-vector/vue-image-uploader/issues"
+  },
+  "homepage": "https://github.com/viral-vector/vue-image-uploader",
+  "dependencies": {
+      
+  }
+}
