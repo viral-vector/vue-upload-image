@@ -79,7 +79,8 @@
             this.form = document.getElementById('image_upload_form--' + this.name);
             this.input = document.getElementById('image_upload_form__input--' + this.name);
 
-            ['drag', 'dragstart', 'dragend', 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(event => this.form.addEventListener(event, (e) => {
+            ['drag', 'dragstart', 'dragend', 
+                'dragover', 'dragenter', 'dragleave', 'drop'].forEach(event => this.form.addEventListener(event, (e) => {
                 e.preventDefault(); e.stopPropagation();
             }));
 
@@ -236,13 +237,9 @@
             fileDelete: function(e, key){
                 Vue.delete(this.files, key);
                 Vue.delete(this.image, key);
-
-                this.$emit('image-upload-image-delete', [ this.files[key]]);
             },
             fileView: function(e, key){
                 e.preventDefault(); e.stopPropagation();
-
-                this.$emit('image-upload-image-view', [ this.files[key]]);
             }
         }
     }

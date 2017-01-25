@@ -1,5 +1,5 @@
 # vue-image-uploader
-Configurable image preview and ajax up-uploader
+Configurable image uploader with preview
 
  + drag and drop with input backup
  + image previews
@@ -33,7 +33,12 @@ npm install vue-image-uploader --save
 ```
 
 ## Configuration
+    ### events
+    image-upload-attempt
+    image-upload-success
+    image-upload-failure
 
+    ### props
     url: {
         type: String,
         required: true,
@@ -44,27 +49,27 @@ npm install vue-image-uploader --save
         required: false,
         default: 'images[]'
     },
-    max_batch: {
+    max_batch: { // # of files to upload within one request
         type: Number,
         required: false,
         default: 0
     },
-    max_files: {
+    max_files: { // total # of files allowed to be uploaded
         type: Number,
         required: false,
         default: 10
     },
-    max_filesize: {
+    max_filesize: { // max files size in KB
         type: Number,
         required: false,
         default: 5000
     },
-    button_html: {
+    button_html: { // text/htm for button
         type: String,
         required: false,
         default: 'Upload Images'
     },
-    button_class: {
+    button_class: { // classes for button
         type: String,
         required: false,
         default: 'btn btn-primary'
