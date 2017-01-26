@@ -39,6 +39,7 @@ npm install vue-upload-image --save
                 .img [&.show, &:hover]
                 span
 ```
+![example]('/example/images/example.png')
 
 ## Events
     upload-image-attempt
