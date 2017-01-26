@@ -9,6 +9,8 @@ Configurable image uploader with preview
  + configurable
  + batched or async
 
+![example](example/images/example.png)
+
 ## Installation
 #### NPM
 ```bash
@@ -39,8 +41,6 @@ npm install vue-upload-image --save
                 .img [&.show, &:hover]
                 span
 ```
-![example]('/example/images/example.png')
-
 ## Events
     upload-image-attempt
     upload-image-success
