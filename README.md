@@ -11,11 +11,11 @@ Configurable image uploader with preview
 
 ## Installation
 #### NPM
-```
+```bash
 npm install vue-upload-image --save
 ```
 
-## Utilization 
+## Usage 
 #### ES6
 ```js
     import UploadImage from 'vue-upload-image';
@@ -81,3 +81,6 @@ npm install vue-upload-image --save
         required: false,
         default: 'btn btn-primary'
     }
+
+## License
+[MIT](http://vjpr.mit-license.org)
