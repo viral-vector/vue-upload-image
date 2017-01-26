@@ -1,4 +1,4 @@
-# vue-image-uploader
+# vue-upload-image
 Configurable image uploader with preview
 
  + drag and drop with input backup
@@ -10,35 +10,42 @@ Configurable image uploader with preview
  + batched or async
 
 ## Installation
-
-### NPM
+#### NPM
 ```
-npm install vue-image-uploader --save
+npm install vue-upload-image --save
 ```
 
 ## Utilization 
-### ES6
+#### ES6
 ```js
-    import ImageUpload from 'vue-image-uploader';
+    import UploadImage from 'vue-upload-image';
 
     new Vue({
-        template: '<image-upload url=""></image-upload>',
+        template: '<upload-image url=""></upload-image>',
         components: {
-            ImageUpload
+            UploadImage
         }
     })
 ```
+
 ```html
-    <image-upload url="" name="" max_files=""></image-upload>
+    <upload-image url="" name="" max_files=""></upload-image>
 ```
 
-## Configuration
-    ### events
-    image-upload-attempt
-    image-upload-success
-    image-upload-failure
+```css
+    .vue_component__upload--image
+        .upload_image_form__thumbnails
+            .upload_image_form__thumbnail [&.bad-size, &.uploaded]
+                .img [&.show, &:hover]
+                span
+```
 
-    ### props
+## Events
+    upload-image-attempt
+    upload-image-success
+    upload-image-failure
+
+## Configuration
     url: {
         type: String,
         required: true,

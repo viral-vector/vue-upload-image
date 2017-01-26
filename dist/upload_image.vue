@@ -1,8 +1,8 @@
 <template>
-    <div class="vue_component vue_component__imageupload" v-bind:class="{ 'dragover': onDragover }">
-        <form v-bind:id="'image_upload_form--' + name" enctype="multipart/form-data">
-            <div class="image_upload_form__thumbnails">
-                <div v-for="(value, key) in files" class="image_upload_form__thumbnail" v-on:click="fileView($event, key)" 
+    <div class="vue_component__upload--image" v-bind:class="{ 'dragover': onDragover }">
+        <form v-bind:id="'upload_image_form--' + name" enctype="multipart/form-data">
+            <div class="upload_image_form__thumbnails">
+                <div v-for="(value, key) in files" class="upload_image_form__thumbnail" v-on:click="fileView($event, key)" 
                         v-bind:class="{ 'uploaded': value.uploaded, 'bad-size': value.bad_size }" >
                     <span v-on:click="fileDelete($event, key)">
                     &#x2716;
@@ -10,7 +10,7 @@
                     <img v-bind:src="image[key]" v-bind:class="{ 'show': image[key]}">
                 </div>
             </div>
-            <input type="file" v-bind:id="'image_upload_form__input--' + name" hidden multiple />
+            <input type="file" v-bind:id="'upload_image_form__input--' + name" hidden multiple />
             <div>  
                 <button type="submit" 
                     v-bind:class="button_class" 
@@ -24,7 +24,7 @@
 
 <script>
     export default {
-        name: 'ImageUpload',
+        name: 'upload-image',
         props: {
             url: {
                 type: String,
@@ -76,8 +76,8 @@
             }
         },
         mounted: function(){
-            this.form = document.getElementById('image_upload_form--' + this.name);
-            this.input = document.getElementById('image_upload_form__input--' + this.name);
+            this.form = document.getElementById('upload_image_form--' + this.name);
+            this.input = document.getElementById('upload_image_form__input--' + this.name);
 
             ['drag', 'dragstart', 'dragend', 
                 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(event => this.form.addEventListener(event, (e) => {
@@ -117,7 +117,7 @@
             }, 
             _xhr: function(formData, keys, callback){
                 this.onUploading = true;
-                this.$emit('image-upload-attempt', formData);
+                this.$emit('upload-image-attempt', formData);
 
                 keys.forEach((key) => {
                     Vue.set(this.files[key], 'attempted', true);
@@ -130,9 +130,9 @@
                         this.total++;
                     });
 
-                    this.$emit('image-upload-success', [formData]);
+                    this.$emit('upload-image-success', [formData]);
                 }, (response) => {
-                    this.$emit('image-upload-failure', [response]);
+                    this.$emit('upload-image-failure', [response]);
                 }).then((response) => {
                     this.onUploading = false;  
                     
@@ -246,7 +246,7 @@
 </script>
 
 <style lang="sass" scoped>
-    .vue_component__imageupload{
+    .vue_component__upload--image{
         padding: 5px;
         cursor: pointer;
         min-height: 80px;
@@ -256,9 +256,9 @@
         form > div{
             text-align: center;
         }
-        .image_upload_form__thumbnails{ 
+        .upload_image_form__thumbnails{ 
             margin-bottom: 1em;
-            .image_upload_form__thumbnail{
+            .upload_image_form__thumbnail{
                 border-radius: 2.5px;
                 position:relative;
                 width:20%;
