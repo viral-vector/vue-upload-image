@@ -1,6 +1,6 @@
 {
   "name": "vue-upload-image",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Configurable image preview & ajax up-loader",
   "main": "dist/upload_image.vue",
   "repository": {
@@ -31,6 +31,6 @@
   },
   "homepage": "https://github.com/viral-vector/vue-upload-image",
   "dependencies": {
-    "vue-resource": "^1.0.3"    
+        
   }
 }

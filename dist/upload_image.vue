@@ -245,64 +245,62 @@
     }
 </script>
 
-<style lang="sass" scoped>
+<style lang="css" scoped>
     .vue_component__upload--image{
         padding: 5px;
         cursor: pointer;
         min-height: 80px;
         border-radius: 5px;
-        &.dragover{
-        }
-        form > div{
-            text-align: center;
-        }
-        .upload_image_form__thumbnails{ 
-            margin-bottom: 1em;
-            .upload_image_form__thumbnail{
-                border-radius: 2.5px;
-                position:relative;
-                width:20%;
-                padding:20% 0 0;
-                overflow: hidden;
-                margin:10px;
-                display:inline-block;
-                img{
-                    position: absolute;
-                    top:50%;
-                    left: 50%;
-                    min-width: 100%;
-                    min-height: 100%;
-                    max-height: 150%;
-                    opacity: 0;
-                    transform: translateX(-50%) translateY(-50%);
-                    transition: 1s opacity;
-                    &.show{
-                        opacity: 1;
-                    }
-                    &:hover{
-                        filter: blur(2px);
-                    }
-                }
-                span{
-                    position: absolute;
-                    top: -5px;
-                    left: 0px;  
-                    z-index: 100;
-                    padding: 0px 1px;
-                    border-radius: 2px;
-                    background-color: grey;
-                }
-                &.bad-size{
-                    img{
-                        filter: grayscale(100%);  
-                    }
-                }
-                &.uploaded{
-                    img{
-                        opacity: 0.1;
-                    }
-                }
-            }
-        }
+    }    
+    .vue_component__upload--image.dragover{}
+    
+    .vue_component__upload--image form > div{
+        text-align: center;
+    }
+    
+    .vue_component__upload--image .upload_image_form__thumbnails{ 
+        margin-bottom: 1em;
+    }
+    .vue_component__upload--image .upload_image_form__thumbnail{
+        border-radius: 2.5px;
+        position:relative;
+        width:20%;
+        padding:20% 0 0;
+        overflow: hidden;
+        margin:10px;
+        display:inline-block;
+    }
+    
+    .vue_component__upload--image .upload_image_form__thumbnail img{
+        position: absolute;
+        top:50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        max-height: 150%;
+        opacity: 0;
+        transform: translateX(-50%) translateY(-50%);
+        transition: 1s opacity;
+    }
+    .vue_component__upload--image .upload_image_form__thumbnail img.show{
+        opacity: 1;
+    }
+    .vue_component__upload--image .upload_image_form__thumbnail img:hover{
+        filter: blur(2px);
+    }
+    .vue_component__upload--image .upload_image_form__thumbnail.bad-size img{
+        filter: grayscale(100%);  
+    }
+    .vue_component__upload--image .upload_image_form__thumbnail.uploaded img{
+        opacity: 0.1;
+    }
+    .vue_component__upload--image .upload_image_form__thumbnail span{
+        position: absolute;
+        top: -5px;
+        left: 0px;  
+        z-index: 100;
+        padding: 0px 1px;
+        border-radius: 2px;
+        background-color: grey;
     }
 </style>

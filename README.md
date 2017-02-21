@@ -4,7 +4,7 @@ Configurable image uploader with preview
  + drag and drop with input backup
  + image previews
  + events
- + 1 dependency [vue-resource]
+ + 0 dependencies
  + minimal
  + configurable
  + batched or async
