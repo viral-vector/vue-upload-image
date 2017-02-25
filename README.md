@@ -16,7 +16,7 @@ npm install vue-upload-image --save
 ```
 #### Vue
 Vue.prototype.$http must be define. 
-![more info](https://medium.com/the-vue-point/retiring-vue-resource-871a82880af4#.z4rqh1qtp)
+[info](https://medium.com/the-vue-point/retiring-vue-resource-871a82880af4#.z4rqh1qtp)
 
 
 ## Usage
