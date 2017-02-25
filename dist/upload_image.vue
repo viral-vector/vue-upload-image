@@ -49,7 +49,7 @@
             max_filesize: {
                 type: Number,
                 required: false,
-                default: 5000
+                default: 8000
             },
             button_html: {
                 type: String,
@@ -130,9 +130,9 @@
                         this.total++;
                     });
 
-                    this.$emit('upload-image-success', [formData]);
+                    this.$emit('upload-image-success', [formData, response]);
                 }, (response) => {
-                    this.$emit('upload-image-failure', [response]);
+                    this.$emit('upload-image-failure', [formData, response]);
                 }).then((response) => {
                     this.onUploading = false;  
                     

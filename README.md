@@ -4,10 +4,8 @@ Configurable image uploader with preview
  + drag and drop with input backup
  + image previews
  + events
- + 0 dependencies
  + minimal
  + configurable
- + batched or async
 
 ![example](example/images/example.png)
 
@@ -16,8 +14,16 @@ Configurable image uploader with preview
 ```bash
 npm install vue-upload-image --save
 ```
+#### Vue
+```javascript
+    this component assumes Vue.prototype.$http has been defined via vue-resourse or Axios. 
+    [More info](https://medium.com/the-vue-point/retiring-vue-resource-871a82880af4#.z4rqh1qtp)
+```
 
-## Usage 
+## Usage
+
+## 
+
 #### ES6
 ```js
     import UploadImage from 'vue-upload-image';
@@ -42,9 +48,9 @@ npm install vue-upload-image --save
                 span
 ```
 ## Events
-    upload-image-attempt
-    upload-image-success
-    upload-image-failure
+    upload-image-attempt -> [FormData]
+    upload-image-success -> [FormData, Response]
+    upload-image-failure -> [FormData, Response] 
 
 ## Configuration
     url: {
@@ -70,9 +76,9 @@ npm install vue-upload-image --save
     max_filesize: { // max files size in KB
         type: Number,
         required: false,
-        default: 5000
+        default: 8000
     },
-    button_html: { // text/htm for button
+    button_html: { // text/html for button
         type: String,
         required: false,
         default: 'Upload Images'
