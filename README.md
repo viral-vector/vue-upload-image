@@ -1,3 +1,5 @@
+[NPM](https://www.npmjs.com/package/vue-upload-image)
+
 # vue-upload-image
 Configurable image uploader with preview
 
