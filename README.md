@@ -15,10 +15,9 @@ Configurable image uploader with preview
 npm install vue-upload-image --save
 ```
 #### Vue
-```javascript
-    this component assumes Vue.prototype.$http has been defined via vue-resourse or Axios. 
-    ![More info](https://medium.com/the-vue-point/retiring-vue-resource-871a82880af4#.z4rqh1qtp)
-```
+Vue.prototype.$http must be define. 
+![more info](https://medium.com/the-vue-point/retiring-vue-resource-871a82880af4#.z4rqh1qtp)
+
 
 ## Usage
 
