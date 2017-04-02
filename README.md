@@ -1,3 +1,5 @@
+[NPM](https://www.npmjs.com/package/vue-upload-image)
+
 # vue-upload-image
 Configurable image uploader with preview
 
@@ -10,12 +12,14 @@ Configurable image uploader with preview
 ![example](example/images/example.png)
 
 ## Installation
-#### NPM
+
 ```bash
 npm install vue-upload-image --save
 ```
-this component assumes Vue.prototype.$http has been defined via vue-resourse or Axios. 
-[More info](https://medium.com/the-vue-point/retiring-vue-resource-871a82880af4#.z4rqh1qtp)
+
+Vue.prototype.$http must be define. 
+[info](https://medium.com/the-vue-point/retiring-vue-resource-871a82880af4#.z4rqh1qtp)
+
 
 #### ES6
 ```js
@@ -41,11 +45,12 @@ new Vue({
             span
 ```
 ## Events
-upload-image-attempt -> [FormData]
-upload-image-success -> [FormData, Response]
-upload-image-failure -> [FormData, Response] 
+* upload-image-attempt -> [FormData]
+* upload-image-success -> [FormData, Response]
+* upload-image-failure -> [FormData, Response] 
 
 ## Configuration
+```js
 url: {
     type: String,
     required: true,
@@ -81,6 +86,7 @@ button_class: { // classes for button
     required: false,
     default: 'btn btn-primary'
 }
+```
 
 ## License
 [MIT](http://vjpr.mit-license.org)
