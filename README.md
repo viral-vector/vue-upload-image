@@ -51,6 +51,11 @@ new Vue({
 
 ## Configuration
 ```js
+inputId: {
+    type: String,
+    required: true,
+    default: null
+},
 url: {
     type: String,
     required: true,

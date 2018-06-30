@@ -1,8 +1,8 @@
 <template>
     <div class="vue_component__upload--image" v-bind:class="{ 'dragover': onDragover }">
-        <form v-bind:id="'upload_image_form--' + name" enctype="multipart/form-data">
+        <form v-bind:id="'upload_image_form--' + inputId" enctype="multipart/form-data">
             <div class="upload_image_form__thumbnails">
-                <div v-for="(value, key) in files" class="upload_image_form__thumbnail" v-on:click="fileView($event, key)" 
+                <div v-for="(value, key) in files" class="upload_image_form__thumbnail" v-on:click="fileView($event, key)"
                         v-bind:class="{ 'uploaded': value.uploaded, 'bad-size': value.bad_size }" >
                     <span v-on:click="fileDelete($event, key)">
                     &#x2716;
@@ -10,12 +10,12 @@
                     <img v-bind:src="image[key]" v-bind:class="{ 'show': image[key]}">
                 </div>
             </div>
-            <input type="file" v-bind:id="'upload_image_form__input--' + name" hidden multiple />
-            <div>  
-                <button type="submit" 
-                    v-bind:class="button_class" 
-                    v-on:click="submit" 
-                    v-bind:disabled="onUploading" 
+            <input type="file" v-bind:id="'upload_image_form__input--' + inputId" hidden multiple />
+            <div>
+                <button type="submit"
+                    v-bind:class="button_class"
+                    v-on:click="submit"
+                    v-bind:disabled="onUploading"
                     v-html="button_html"></button>
             </div>
         </form>
@@ -26,6 +26,10 @@
     export default {
         name: 'upload-image',
         props: {
+            inputId: {
+                type: String,
+                required: true
+            },
             url: {
                 type: String,
                 required: true,
@@ -60,7 +64,7 @@
                 type: String,
                 required: false,
                 default: 'btn btn-primary'
-            },
+            }
         },
         data: function(){
             return {
@@ -68,18 +72,18 @@
                 input: null,
                 index: 0,
                 total: 0,
-                files: {}, 
+                files: {},
                 image: {},
                 batch: {},
                 onDragover: false,
-                onUploading: false  
+                onUploading: false
             }
         },
         mounted: function(){
-            this.form = document.getElementById('upload_image_form--' + this.name);
-            this.input = document.getElementById('upload_image_form__input--' + this.name);
+            this.form = document.getElementById('upload_image_form--' + this.inputId);
+            this.input = document.getElementById('upload_image_form__input--' + this.inputId);
 
-            ['drag', 'dragstart', 'dragend', 
+            ['drag', 'dragstart', 'dragend',
                 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(event => this.form.addEventListener(event, (e) => {
                 e.preventDefault(); e.stopPropagation();
             }));
@@ -114,7 +118,7 @@
                     return false;
                 }
                 return true;
-            }, 
+            },
             _xhr: function(formData, keys, callback){
                 this.onUploading = true;
                 this.$emit('upload-image-attempt', formData);
@@ -134,9 +138,9 @@
                 }, (response) => {
                     this.$emit('upload-image-failure', [formData, response]);
                 }).then((response) => {
-                    this.onUploading = false;  
-                    
-                    callback(); 
+                    this.onUploading = false;
+
+                    callback();
                 });
             },
             upload: function(){
@@ -146,23 +150,23 @@
                     if(!this._can_upload_file(key)) continue;
 
                     let formData = new FormData();
-                    formData.append(this.name, this.files[key]); 
-                    
+                    formData.append(this.name, this.files[key]);
+
                     this._xhr(formData, [key], this.upload);
-                    
-                    return true;   
-                }  
+
+                    return true;
+                }
             },
             upload_batch: function(){
                 if(!this._can_xhr()) return false;
 
-                for (let key in this.batch) {                    
-                    this._xhr(this.batch[key].form, this.batch[key].keys, this.upload_batch); 
+                for (let key in this.batch) {
+                    this._xhr(this.batch[key].form, this.batch[key].keys, this.upload_batch);
 
                     delete this.batch[key];
 
                     return true;
-                } 
+                }
             },
             create_batch: function(){
                 let index = 0;
@@ -186,11 +190,11 @@
             },
             submit: function(e){
                 e.preventDefault(); e.stopPropagation();
-                
+
                 if(!this.onUploading){
                     if(this.max_batch > 1){
                                this.create_batch();
-                        return this.upload_batch();                        
+                        return this.upload_batch();
                     }
                     this.upload();
                 }
@@ -213,7 +217,7 @@
                     this.fileInit(this.index);
                     this.fileRead(this.index);
 
-                    this.index++; 
+                    this.index++;
                 }
 
                 e.target.value = '';
@@ -251,14 +255,14 @@
         cursor: pointer;
         min-height: 80px;
         border-radius: 5px;
-    }    
+    }
     .vue_component__upload--image.dragover{}
-    
+
     .vue_component__upload--image form > div{
         text-align: center;
     }
-    
-    .vue_component__upload--image .upload_image_form__thumbnails{ 
+
+    .vue_component__upload--image .upload_image_form__thumbnails{
         margin-bottom: 1em;
     }
     .vue_component__upload--image .upload_image_form__thumbnail{
@@ -270,7 +274,7 @@
         margin:10px;
         display:inline-block;
     }
-    
+
     .vue_component__upload--image .upload_image_form__thumbnail img{
         position: absolute;
         top:50%;
@@ -289,7 +293,7 @@
         filter: blur(2px);
     }
     .vue_component__upload--image .upload_image_form__thumbnail.bad-size img{
-        filter: grayscale(100%);  
+        filter: grayscale(100%);
     }
     .vue_component__upload--image .upload_image_form__thumbnail.uploaded img{
         opacity: 0.1;
@@ -297,7 +301,7 @@
     .vue_component__upload--image .upload_image_form__thumbnail span{
         position: absolute;
         top: -5px;
-        left: 0px;  
+        left: 0px;
         z-index: 100;
         padding: 0px 1px;
         border-radius: 2px;
