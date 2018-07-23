@@ -51,7 +51,7 @@ new Vue({
 
 ## Configuration
 ```js
-inputId: {
+input_id: {
     type: String,
     required: true,
     default: null
