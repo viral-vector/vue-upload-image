@@ -3,7 +3,7 @@
         <form v-bind:id="'upload_image_form--' + input_id" enctype="multipart/form-data">
             <div class="upload_image_form__thumbnails">
                 <div v-for="(value, key) in files" class="upload_image_form__thumbnail" v-on:click="fileView($event, key)"
-                        v-bind:class="{ 'uploaded': value.uploaded, 'bad-size': value.bad_size }" >
+                     v-bind:class="{ 'uploaded': value.uploaded, 'bad-size': value.bad_size }" >
                     <span v-on:click="fileDelete($event, key)">
                     &#x2716;
                     </span>
@@ -13,10 +13,10 @@
             <input type="file" v-bind:id="'upload_image_form__input--' + input_id" hidden multiple />
             <div>
                 <button type="submit"
-                    v-bind:class="button_class"
-                    v-on:click="submit"
-                    v-bind:disabled="onUploading"
-                    v-html="button_html"></button>
+                        v-bind:class="button_class"
+                        v-on:click="submit"
+                        v-bind:disabled="onUploading"
+                        v-html="button_html"></button>
             </div>
         </form>
     </div>
@@ -56,10 +56,10 @@
                 required: false,
                 default: 8000
             },
-            resize_crop: {
+            resize_enabled: {
                 type: Boolean,
                 required: false,
-                default: false
+                default: true
             },
             resize_max_width: {
                 type: Number,
@@ -102,7 +102,7 @@
             ['drag', 'dragstart', 'dragend',
                 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(event => this.form.addEventListener(event, (e) => {
                 e.preventDefault(); e.stopPropagation();
-            }));
+        }));
 
             ['dragover', 'dragenter']
                 .forEach(event => this.form.addEventListener(event, this.dragEnter));
@@ -118,7 +118,7 @@
 
             this.form.addEventListener('click', (e) => {
                 this.input.click();
-            });
+        });
         },
         methods: {
             _can_xhr(){
@@ -140,24 +140,24 @@
                 this.$emit('upload-image-attempt', formData);
 
                 keys.forEach((key) => {
-                    Vue.set(this.files[key], 'attempted', true);
-                });
+                    this.$set(this.files[key], 'attempted', true);
+            });
 
                 this.$http.post(this.url, formData).then((response) => {
                     keys.forEach((key) => {
-                        Vue.set(this.files[key], 'uploaded', true);
+                    this.$set(this.files[key], 'uploaded', true);
 
-                        this.total++;
-                    });
+                this.total++;
+            });
 
-                    this.$emit('upload-image-success', [formData, response]);
-                }, (response) => {
+                this.$emit('upload-image-success', [formData, response]);
+            }, (response) => {
                     this.$emit('upload-image-failure', [formData, response]);
                 }).then((response) => {
                     this.onUploading = false;
 
-                    callback();
-                });
+                callback();
+            });
             },
             upload: function(){
                 if(!this._can_xhr()) return false;
@@ -166,7 +166,7 @@
                     if(!this._can_upload_file(key)) continue;
 
                     let formData = new FormData();
-                    formData.append(this.name, this.files[key]);
+                    formData.append(this.name, this.files[key].file, this.files[key].name);
 
                     this._xhr(formData, [key], this.upload);
 
@@ -201,7 +201,7 @@
 
                     count++;
                     this.batch[index]['keys'].push(key);
-                    this.batch[index]['form'].append(this.name, this.files[key]);
+                    this.batch[index]['form'].append(this.name, this.files[key].file, this.files[key].name);
                 }
             },
             submit: function(e){
@@ -209,7 +209,7 @@
 
                 if(!this.onUploading){
                     if(this.max_batch > 1){
-                               this.create_batch();
+                        this.create_batch();
                         return this.upload_batch();
                     }
                     this.upload();
@@ -229,34 +229,84 @@
                 let newFiles = e.target.files || e.dataTransfer.files;
 
                 for(let i = 0; i < newFiles.length; i++){
-                    Vue.set(this.files, this.index, newFiles[i]);
-                    this.fileInit(this.index);
-                    this.fileRead(this.index);
+                    this.$set(this.files, this.index, newFiles[i]);
 
-                    this.index++;
+                    if (newFiles[i].type.match(/image.*/)) {
+                        this.fileInit(this.index);
+                        this.fileRead(this.index);
+
+                        this.index++;
+                    };
                 }
-
                 e.target.value = '';
             },
             fileInit: function(key){
                 let file = this.files[key];
 
+                this.files[key] = {
+                    name: this.files[key].name,
+                    file: this.files[key]
+                };
+
                 if((file.size * 0.001) > this.max_filesize){
-                    Vue.set(this.files[key], 'bad_size', true);
+                    this.$set(this.files[key], 'bad_size', true);
                 }
             },
             fileRead: function(key){
                 let reader = new FileReader();
 
                 reader.addEventListener("load", (e) => {
-                    Vue.set(this.image, key, reader.result);
-                });
+                    this.$set(this.image, key, reader.result);
 
-                reader.readAsDataURL(this.files[key]);
+                if(this.resize_enabled) {
+                    let imager = new Image();
+
+                    imager.onload = () => {
+                        let width = imager.width;
+                        let height = imager.height;
+
+                        if(width > this.resize_max_width || height > this.resize_max_height) {
+                            if ((height / width) - (this.resize_max_height / this.resize_max_width) > 0) {
+                                width = this.resize_max_height / height * width;
+                                height = this.resize_max_height;
+                            } else {
+                                height = this.resize_max_width / width * height;
+                                width = this.resize_max_width;
+                            }
+                        }
+
+                        let canvas = document.createElement("canvas");
+                        canvas.width = width;
+                        canvas.height = height;
+
+                        let ctx = canvas.getContext("2d");
+                        ctx.drawImage(imager, 0, 0, width, height);
+
+                        let newImageData = canvas.toDataURL("image/png");
+
+                        this.$set(this.image, key, newImageData);
+
+                        //
+                        let img = atob(newImageData.split(',')[1]);
+                        let img_buffer = [];
+                        let i = 0;
+                        while (i < img.length) {
+                            img_buffer.push(img.charCodeAt(i));
+                            i++;
+                        }
+                        let u8Image = new Uint8Array(img_buffer);
+
+                        this.$set(this.files, key, {name:this.files[key].name ,file: new Blob([ u8Image ], {filename:this.files[key].name})});
+                    };
+                    imager.src = reader.result;
+                }
+            });
+
+                reader.readAsDataURL(this.files[key].file);
             },
             fileDelete: function(e, key){
-                Vue.delete(this.files, key);
-                Vue.delete(this.image, key);
+                this.$delete(this.files, key);
+                this.$delete(this.image, key);
             },
             fileView: function(e, key){
                 e.preventDefault(); e.stopPropagation();
