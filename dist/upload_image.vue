@@ -59,7 +59,7 @@
             resize_enabled: {
                 type: Boolean,
                 required: false,
-                default: true
+                default: false
             },
             resize_max_width: {
                 type: Number,
