@@ -28,7 +28,8 @@
         props: {
             input_id: {
                 type: String,
-                required: true
+                required: false,
+                default: "default"
             },
             url: {
                 type: String,
@@ -54,6 +55,21 @@
                 type: Number,
                 required: false,
                 default: 8000
+            },
+            resize_crop: {
+                type: Boolean,
+                required: false,
+                default: false
+            },
+            resize_max_width: {
+                type: Number,
+                required: false,
+                default: 800
+            },
+            resize_max_height: {
+                type: Number,
+                required: false,
+                default: 600
             },
             button_html: {
                 type: String,
