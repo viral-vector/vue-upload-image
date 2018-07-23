@@ -5,6 +5,7 @@ Configurable image uploader with preview
 
  + drag and drop with input backup
  + image previews
+ + simple resizing
  + events
  + minimal
  + configurable
@@ -51,17 +52,17 @@ new Vue({
 
 ## Configuration
 ```js
-input_id: {
+input_id: { // Id of upload control
+    type: String,
+    required: false,
+    default: "default"
+},
+url: { // upload url
     type: String,
     required: true,
     default: null
 },
-url: {
-    type: String,
-    required: true,
-    default: null
-},
-name: {
+name: { // name to use for FormData
     type: String,
     required: false,
     default: 'images[]'
@@ -80,6 +81,21 @@ max_filesize: { // max files size in KB
     type: Number,
     required: false,
     default: 8000
+},
+resize_enabled: { // resize image prior to preview/upload
+    type: Boolean,
+    required: false,
+    default: false
+},
+resize_max_width: { // resize max width
+    type: Number,
+    required: false,
+    default: 800
+},
+resize_max_height: { // resize max height
+    type: Number,
+    required: false,
+    default: 600
 },
 button_html: { // text/html for button
     type: String,
