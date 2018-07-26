@@ -1,4 +1,4 @@
-[NPM](https://www.npmjs.com/package/vue-upload-image)
+[![Latest Stable Version](https://img.shields.io/npm/v/vue-upload-image.svg)](https://www.npmjs.com/package/vue-upload-image)
 
 # vue-upload-image
 Configurable image uploader with preview
@@ -110,4 +110,8 @@ button_class: { // classes for button
 ```
 
 ## License
-[MIT](http://vjpr.mit-license.org)
+This project is licensed under the MIT [MIT](http://vjpr.mit-license.org) License.
+
+## Contributing Guidelines
+    
+* All changes must be documented in [CHANGELOG.md](CHANGELOG.md) 

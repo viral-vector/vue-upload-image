@@ -1,6 +1,6 @@
 {
   "name": "vue-upload-image",
-  "version": "1.0.5",
+  "version": "1.1.1",
   "description": "Configurable image preview & ajax up-loader",
   "main": "dist/upload_image.vue",
   "repository": {
