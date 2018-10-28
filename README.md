@@ -110,7 +110,7 @@ button_class: { // classes for button
 ```
 
 ## License
-This project is licensed under the MIT [MIT](http://vjpr.mit-license.org) License.
+This project is licensed under the [MIT](http://vjpr.mit-license.org) License.
 
 ## Contributing Guidelines
     
