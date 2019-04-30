@@ -35,7 +35,7 @@ new Vue({
 ```
 
 ```html
-<upload-image url="" name="" max_files=""></upload-image>
+<upload-image url="" name="" :max_files="5"></upload-image>
 ```
 
 ```css
