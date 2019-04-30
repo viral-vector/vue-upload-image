@@ -1,3 +1,7 @@
+#### 1.1.2
+
+ * README & LICENSE adjustments.
+
 #### 1.1.1
     
  * README & CHANGELOG adjustments.
