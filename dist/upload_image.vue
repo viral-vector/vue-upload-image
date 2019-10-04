@@ -41,6 +41,11 @@
                 required: false,
                 default: 'images[]'
             },
+            custom_submit: { //to override default uploading
+                type: Boolean,
+                required: false,
+                default: false
+            },
             max_batch: {
                 type: Number,
                 required: false,
@@ -102,7 +107,7 @@
             ['drag', 'dragstart', 'dragend',
                 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(event => this.form.addEventListener(event, (e) => {
                 e.preventDefault(); e.stopPropagation();
-        }));
+            }));
 
             ['dragover', 'dragenter']
                 .forEach(event => this.form.addEventListener(event, this.dragEnter));
@@ -118,7 +123,7 @@
 
             this.form.addEventListener('click', (e) => {
                 this.input.click();
-        });
+            });
         },
         methods: {
             _can_xhr(){
@@ -141,23 +146,23 @@
 
                 keys.forEach((key) => {
                     this.$set(this.files[key], 'attempted', true);
-            });
+                });
 
                 this.$http.post(this.url, formData).then((response) => {
                     keys.forEach((key) => {
-                    this.$set(this.files[key], 'uploaded', true);
+                        this.$set(this.files[key], 'uploaded', true);
 
-                this.total++;
-            });
+                        this.total++;
+                    });
 
-                this.$emit('upload-image-success', [formData, response]);
-            }, (response) => {
+                    this.$emit('upload-image-success', [formData, response]);
+                }, (response) => {
                     this.$emit('upload-image-failure', [formData, response]);
                 }).then((response) => {
                     this.onUploading = false;
 
-                callback();
-            });
+                    callback();
+                });
             },
             upload: function(){
                 if(!this._can_xhr()) return false;
@@ -207,12 +212,16 @@
             submit: function(e){
                 e.preventDefault(); e.stopPropagation();
 
-                if(!this.onUploading){
-                    if(this.max_batch > 1){
-                        this.create_batch();
-                        return this.upload_batch();
+                if(this.custom_submit)
+                    this.$emit('upload-images', this.files)
+                else{
+                    if(!this.onUploading){
+                        if(this.max_batch > 1){
+                            this.create_batch();
+                            return this.upload_batch();
+                        }
+                        this.upload();
                     }
-                    this.upload();
                 }
             },
             dragEnter: function(e){
@@ -258,49 +267,49 @@
                 reader.addEventListener("load", (e) => {
                     this.$set(this.image, key, reader.result);
 
-                if(this.resize_enabled) {
-                    let imager = new Image();
+                    if(this.resize_enabled) {
+                        let imager = new Image();
 
-                    imager.onload = () => {
-                        let width = imager.width;
-                        let height = imager.height;
+                        imager.onload = () => {
+                            let width = imager.width;
+                            let height = imager.height;
 
-                        if(width > this.resize_max_width || height > this.resize_max_height) {
-                            if ((height / width) - (this.resize_max_height / this.resize_max_width) > 0) {
-                                width = this.resize_max_height / height * width;
-                                height = this.resize_max_height;
-                            } else {
-                                height = this.resize_max_width / width * height;
-                                width = this.resize_max_width;
+                            if(width > this.resize_max_width || height > this.resize_max_height) {
+                                if ((height / width) - (this.resize_max_height / this.resize_max_width) > 0) {
+                                    width = this.resize_max_height / height * width;
+                                    height = this.resize_max_height;
+                                } else {
+                                    height = this.resize_max_width / width * height;
+                                    width = this.resize_max_width;
+                                }
                             }
-                        }
 
-                        let canvas = document.createElement("canvas");
-                        canvas.width = width;
-                        canvas.height = height;
+                            let canvas = document.createElement("canvas");
+                            canvas.width = width;
+                            canvas.height = height;
 
-                        let ctx = canvas.getContext("2d");
-                        ctx.drawImage(imager, 0, 0, width, height);
+                            let ctx = canvas.getContext("2d");
+                            ctx.drawImage(imager, 0, 0, width, height);
 
-                        let newImageData = canvas.toDataURL("image/png");
+                            let newImageData = canvas.toDataURL("image/png");
 
-                        this.$set(this.image, key, newImageData);
+                            this.$set(this.image, key, newImageData);
 
-                        //
-                        let img = atob(newImageData.split(',')[1]);
-                        let img_buffer = [];
-                        let i = 0;
-                        while (i < img.length) {
-                            img_buffer.push(img.charCodeAt(i));
-                            i++;
-                        }
-                        let u8Image = new Uint8Array(img_buffer);
+                            //
+                            let img = atob(newImageData.split(',')[1]);
+                            let img_buffer = [];
+                            let i = 0;
+                            while (i < img.length) {
+                                img_buffer.push(img.charCodeAt(i));
+                                i++;
+                            }
+                            let u8Image = new Uint8Array(img_buffer);
 
-                        this.$set(this.files, key, {name:this.files[key].name ,file: new Blob([ u8Image ], {filename:this.files[key].name})});
-                    };
-                    imager.src = reader.result;
-                }
-            });
+                            this.$set(this.files, key, {name:this.files[key].name ,file: new Blob([ u8Image ], {filename:this.files[key].name})});
+                        };
+                        imager.src = reader.result;
+                    }
+                });
 
                 reader.readAsDataURL(this.files[key].file);
             },

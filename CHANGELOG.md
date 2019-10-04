@@ -1,3 +1,5 @@
+#### 1.1.3
+ * Added images uploading alternative
 #### 1.1.2
 
  * README & LICENSE adjustments.

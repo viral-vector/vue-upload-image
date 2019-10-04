@@ -49,6 +49,7 @@ new Vue({
 * upload-image-attempt -> [FormData]
 * upload-image-success -> [FormData, Response]
 * upload-image-failure -> [FormData, Response] 
+* upload-images -> [Images] (make sure to override ```custom_submit``` prop to ```true```)
 
 ## Configuration
 ```js
@@ -61,6 +62,11 @@ url: { // upload url
     type: String,
     required: true,
     default: null
+},
+custom_submit: { //to override default uploading
+    type: Boolean,
+    required: false,
+    default: false
 },
 name: { // name to use for FormData
     type: String,
