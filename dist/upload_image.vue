@@ -42,11 +42,12 @@
                 required: false,
                 default: 'images[]'
             },
-<<<<<<< HEAD
-            custom_submit: { //to override default uploading
-=======
+            params: { //additional params to send to the server
+              type: Object,
+              required: false,
+              default: {}
+            },
             disable_upload: {
->>>>>>> 32f2d8944ad249298b8d61d975e16f5f322ff050
                 type: Boolean,
                 required: false,
                 default: false
@@ -108,29 +109,19 @@
         mounted: function () {
             this.form = document.getElementById('upload_image_form--' + this.input_id);
             this.input = document.getElementById('upload_image_form__input--' + this.input_id);
-
             ['drag', 'dragstart', 'dragend',
                 'dragover', 'dragenter', 'dragleave', 'drop'].forEach(event => this.form.addEventListener(event, (e) => {
-<<<<<<< HEAD
-                e.preventDefault(); e.stopPropagation();
-=======
                 e.preventDefault();
                 e.stopPropagation();
->>>>>>> 32f2d8944ad249298b8d61d975e16f5f322ff050
             }));
-
             ['dragover', 'dragenter']
                 .forEach(event => this.form.addEventListener(event, this.dragEnter));
-
             ['dragleave', 'dragend', 'drop']
                 .forEach(event => this.form.addEventListener(event, this.dragLeave));
-
             ['drop']
                 .forEach(event => this.form.addEventListener(event, this.fileDrop));
-
             ['change']
                 .forEach(event => this.input.addEventListener(event, this.fileDrop));
-
             this.form.addEventListener('click', (e) => {
                 this.input.click();
             });
@@ -144,7 +135,6 @@
             },
             _can_upload_file(key) {
                 let file = this.files[key];
-
                 if (file.attempted || file.bad_size) {
                     return false;
                 }
@@ -153,67 +143,55 @@
             _xhr: function (formData, keys, callback) {
                 this.onUploading = true;
                 this.$emit('upload-image-attempt', formData);
-
                 keys.forEach((key) => {
                     this.$set(this.files[key], 'attempted', true);
                 });
-
                 this.$http.post(this.url, formData).then((response) => {
                     keys.forEach((key) => {
                         this.$set(this.files[key], 'uploaded', true);
-
                         this.total++;
                     });
-
                     this.$emit('upload-image-success', [formData, response]);
                 }, (response) => {
                     this.$emit('upload-image-failure', [formData, response]);
                 }).then((response) => {
                     this.onUploading = false;
-
                     callback();
                 });
             },
             upload: function () {
                 if (!this._can_xhr()) return false;
-
                 for (let key in this.files) {
                     if (!this._can_upload_file(key)) continue;
-
                     let formData = new FormData();
+                    //add additional params
+                    for (let [key, value] of Object.entries(this.params)) {
+                        formData.append(key, value)
+                    }
                     formData.append(this.name, this.files[key].file, this.files[key].name);
-
                     this._xhr(formData, [key], this.upload);
-
                     return true;
                 }
             },
             upload_batch: function () {
                 if (!this._can_xhr()) return false;
-
                 for (let key in this.batch) {
                     this._xhr(this.batch[key].form, this.batch[key].keys, this.upload_batch);
-
                     delete this.batch[key];
-
                     return true;
                 }
             },
             create_batch: function () {
                 let index = 0;
                 let count = 0;
-
                 this.batch = {};
-
                 for (let key in this.files) {
                     if (!this._can_upload_file(key)) continue;
-
                     if (this.batch[index] == null || count == this.max_batch) {
                         index++;
                         count = 0;
                         this.batch[index] = {form: new FormData(), keys: []};
                     }
-
                     count++;
                     this.batch[index]['keys'].push(key);
                     this.batch[index]['form'].append(this.name, this.files[key].file, this.files[key].name);
@@ -222,26 +200,13 @@
             submit: function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-
                 this.$emit('upload-image-submit', this.files);
-
-<<<<<<< HEAD
-                if(this.custom_submit)
-                    this.$emit('upload-images', this.files)
-                else{
-                    if(!this.onUploading){
-                        if(this.max_batch > 1){
-                            this.create_batch();
-                            return this.upload_batch();
-                        }
-                        this.upload();
-=======
                 if(!this.disable_upload && !this.onUploading) {
                     if (this.max_batch > 1) {
                         this.create_batch();
                         return this.upload_batch();
->>>>>>> 32f2d8944ad249298b8d61d975e16f5f322ff050
                     }
+                    this.upload();
                 }
             },
             dragEnter: function (e) {
@@ -254,16 +219,12 @@
             },
             fileDrop: function (e) {
                 e.preventDefault();
-
                 let newFiles = e.target.files || e.dataTransfer.files;
-
                 for (let i = 0; i < newFiles.length; i++) {
                     this.$set(this.files, this.index, newFiles[i]);
-
                     if (newFiles[i].type.match(/image.*/)) {
                         this.fileInit(this.index);
                         this.fileRead(this.index);
-
                         this.index++;
                     }
                     ;
@@ -272,38 +233,24 @@
             },
             fileInit: function (key) {
                 let file = this.files[key];
-
                 this.files[key] = {
                     name: this.files[key].name,
                     file: this.files[key]
                 };
-
                 if ((file.size * 0.001) > this.max_filesize) {
                     this.$set(this.files[key], 'bad_size', true);
                 }
             },
             fileRead: function (key) {
                 let reader = new FileReader();
-
                 reader.addEventListener("load", (e) => {
                     this.$set(this.image, key, reader.result);
-
-<<<<<<< HEAD
-                    if(this.resize_enabled) {
-=======
                     if (this.resize_enabled) {
->>>>>>> 32f2d8944ad249298b8d61d975e16f5f322ff050
                         let imager = new Image();
-
                         imager.onload = () => {
                             let width = imager.width;
                             let height = imager.height;
-
-<<<<<<< HEAD
-                            if(width > this.resize_max_width || height > this.resize_max_height) {
-=======
                             if (width > this.resize_max_width || height > this.resize_max_height) {
->>>>>>> 32f2d8944ad249298b8d61d975e16f5f322ff050
                                 if ((height / width) - (this.resize_max_height / this.resize_max_width) > 0) {
                                     width = this.resize_max_height / height * width;
                                     height = this.resize_max_height;
@@ -312,18 +259,13 @@
                                     width = this.resize_max_width;
                                 }
                             }
-
                             let canvas = document.createElement("canvas");
                             canvas.width = width;
                             canvas.height = height;
-
                             let ctx = canvas.getContext("2d");
                             ctx.drawImage(imager, 0, 0, width, height);
-
                             let newImageData = canvas.toDataURL("image/png");
-
                             this.$set(this.image, key, newImageData);
-
                             //
                             let img = atob(newImageData.split(',')[1]);
                             let img_buffer = [];
@@ -333,22 +275,15 @@
                                 i++;
                             }
                             let u8Image = new Uint8Array(img_buffer);
-
-<<<<<<< HEAD
-                            this.$set(this.files, key, {name:this.files[key].name ,file: new Blob([ u8Image ], {filename:this.files[key].name})});
-=======
                             this.$set(this.files, key, {
                                 name: this.files[key].name,
                                 file: new Blob([u8Image], {filename: this.files[key].name})
                             });
-
                             this.$emit('upload-image-loaded', this.files[key]);
->>>>>>> 32f2d8944ad249298b8d61d975e16f5f322ff050
                         };
                         imager.src = reader.result;
                     }
                 });
-
                 reader.readAsDataURL(this.files[key].file);
             },
             fileDelete: function (e, key) {
@@ -372,18 +307,14 @@
         min-height: 80px;
         border-radius: 5px;
     }
-
     .vue_component__upload--image.dragover {
     }
-
     .vue_component__upload--image form > div {
         text-align: center;
     }
-
     .vue_component__upload--image .upload_image_form__thumbnails {
         margin-bottom: 1em;
     }
-
     .vue_component__upload--image .upload_image_form__thumbnail {
         border-radius: 2.5px;
         position: relative;
@@ -393,7 +324,6 @@
         margin: 10px;
         display: inline-block;
     }
-
     .vue_component__upload--image .upload_image_form__thumbnail img {
         position: absolute;
         top: 50%;
@@ -405,23 +335,18 @@
         transform: translateX(-50%) translateY(-50%);
         transition: 1s opacity;
     }
-
     .vue_component__upload--image .upload_image_form__thumbnail img.show {
         opacity: 1;
     }
-
     .vue_component__upload--image .upload_image_form__thumbnail img:hover {
         filter: blur(2px);
     }
-
     .vue_component__upload--image .upload_image_form__thumbnail.bad-size img {
         filter: grayscale(100%);
     }
-
     .vue_component__upload--image .upload_image_form__thumbnail.uploaded img {
         opacity: 0.1;
     }
-
     .vue_component__upload--image .upload_image_form__thumbnail span {
         position: absolute;
         top: -5px;

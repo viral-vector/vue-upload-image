@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-#### 1.1.3
- * Added images uploading alternative
-=======
 #### 1.1.5
  * improved documentation
  * ability to disable automatic uploading (allowing for manual uploads)
@@ -14,7 +10,6 @@
  * added image removed event (called when an image has been removed)
     * upload-image-removed
 
->>>>>>> 32f2d8944ad249298b8d61d975e16f5f322ff050
 #### 1.1.2
 
  * README & LICENSE adjustments.

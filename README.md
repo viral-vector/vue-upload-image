@@ -43,6 +43,7 @@ new Vue({
    :url="forms.create.url"
    :max_files="5"
    name="files[]"
+   :params="paramsObject"
    :resize_enabled="true"
    :resize_max_width="640"
    :button_html="forms.create.confirm"
@@ -67,14 +68,6 @@ new Vue({
     }
 }
 ```
-<<<<<<< HEAD
-## Events
-* upload-image-attempt -> [FormData]
-* upload-image-success -> [FormData, Response]
-* upload-image-failure -> [FormData, Response] 
-* upload-images -> [Images] (make sure to override ```custom_submit``` prop to ```true```)
-=======
->>>>>>> 32f2d8944ad249298b8d61d975e16f5f322ff050
 
 ## Configuration
 ```js
@@ -88,15 +81,15 @@ url: { // upload url
     required: true,
     default: null
 },
-custom_submit: { //to override default uploading
-    type: Boolean,
-    required: false,
-    default: false
-},
 name: { // name to use for FormData
     type: String,
     required: false,
     default: 'images[]'
+},
+params: { //additional params to send to the server
+  type: Object,
+  required: false,
+  default: {}
 },
 disable_upload: { // disable auto uploading
     type: Boolean,
