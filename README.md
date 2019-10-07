@@ -12,44 +12,69 @@ Configurable image uploader with preview
 
 ![example](example/images/example.png)
 
-## Installation
+## Installation & Usage
 
+Vue.prototype.$http must be define, for automatic uploads to work. 
+[info](https://medium.com/the-vue-point/retiring-vue-resource-871a82880af4#.z4rqh1qtp)
+
+* install the package
 ```bash
 npm install vue-upload-image --save
 ```
-
-Vue.prototype.$http must be define. 
-[info](https://medium.com/the-vue-point/retiring-vue-resource-871a82880af4#.z4rqh1qtp)
-
-
-#### ES6
+* import & register the component 
 ```js
 import UploadImage from 'vue-upload-image';
 
+// register globally
+Vue.component('upload-image', UploadImage)
+
+// or ... register locally 
 new Vue({
-    template: '<upload-image url=""></upload-image>',
+    ...,
     components: {
-        UploadImage
+        UploadImage 
     }
 })
 ```
-
+* add component to page 
 ```html
-<upload-image url="" name="" :max_files="5"></upload-image>
-```
+// html template
+<upload-image is="upload-image"
+   :url="forms.create.url"
+   :max_files="5"
+   name="files[]"
+   :resize_enabled="true"
+   :resize_max_width="640"
+   :button_html="forms.create.confirm"
+   :button_class="'button is-primary'"
+   v-on:upload-image-attemp="uploadImageAttempt"
+   v-on:upload-image-success="uploadImageSuccess"
+   v-on:upload-image-failure="uploadImageFailure"
+   v-on:upload-image-loaded="uploadImageLoaded"
+   v-on:upload-image-submit="uploadImageSubmit"
+   v-on:upload-image-clicked="uploadImageClicked"
+   v-on:upload-image-removed="uploadImageRemoved"
+></upload-image>
 
-```css
-.vue_component__upload--image
-    .upload_image_form__thumbnails
-        .upload_image_form__thumbnail [&.bad-size, &.uploaded]
-            .img [&.show, &:hover]
-            span
+// or set Vue instance template property
+{   
+    name: 'component or root Vue instance',
+    template: '<upload-image :max_files="5" ....></upload-image>',
+    props: ...,
+    data: ...
+    components: {
+        UploadImage
+    }
+}
 ```
+<<<<<<< HEAD
 ## Events
 * upload-image-attempt -> [FormData]
 * upload-image-success -> [FormData, Response]
 * upload-image-failure -> [FormData, Response] 
 * upload-images -> [Images] (make sure to override ```custom_submit``` prop to ```true```)
+=======
+>>>>>>> 32f2d8944ad249298b8d61d975e16f5f322ff050
 
 ## Configuration
 ```js
@@ -72,6 +97,11 @@ name: { // name to use for FormData
     type: String,
     required: false,
     default: 'images[]'
+},
+disable_upload: { // disable auto uploading
+    type: Boolean,
+    required: false,
+    default: false
 },
 max_batch: { // # of files to upload within one request
     type: Number,
@@ -114,6 +144,82 @@ button_class: { // classes for button
     default: 'btn btn-primary'
 }
 ```
+
+## UI/UX Adjustments
+
+* Basic look & feel can be adjusted via html/css classes
+```css
+.vue_component__upload--image
+    .upload_image_form__thumbnails
+        .upload_image_form__thumbnail [&.bad-size, &.uploaded]
+            .img [&.show, &:hover]
+            span
+```
+
+## Events
+* Event listeners can be added as such
+
+```html
+<upload-image
+   v-on:upload-image-attemp="uploadImageAttempt"
+   v-on:upload-image-success="uploadImageSuccess"
+   v-on:upload-image-failure="uploadImageFailure"
+   v-on:upload-image-loaded="uploadImageLoaded"
+   v-on:upload-image-submit="uploadImageSubmit"
+   v-on:upload-image-clicked="uploadImageClicked"
+   v-on:upload-image-removed="uploadImageRemoved"
+   // or...
+   @upload-image-submit="uploadImageSubmit"
+></upload-image>
+```
+
+```js
+{
+    methods: {
+        uploadImageSuccess: function(result){
+            result[0] // FormData
+            result[1] // response
+        },
+        uploadImageLoaded: function(image){
+            image.name || image.file 
+        },
+        uploadImageClicked: function(image){
+            image.name || image.file 
+        },
+        uploadImageRemoved: function(image){
+            image.name || image.file 
+        },
+        uploadImageSubmit: function(images){
+        }
+    }
+}
+```
+
+* **upload-image-loaded**  **-** [image] 
+    * event is called after an image has been fully loaded & rendered in preview area
+    * emits an object containing the file name & blob of the image
+* **upload-image-clicked** **-** [image]
+    * event is called when an image in preview has been clicked
+    * emits an object containing the file name & blob of the image
+* **upload-image-removed** **-** [image]
+    * event is called after an image has been removed from preview
+    * emits an object containing the file name & blob of the image
+* **upload-image-submit**  **-** [images] 
+    * event is called immediately after the end user triggers the "submit" action (button_html property)
+    * emits a FormData object composed of images being uploaded 
+    * batched submissions will emit this event per batch
+    * **can be utilized with disable_upload property for manual uploads** 
+* **upload-image-attempt** **-** [FormData]
+    * event is called prior to an automatic upload to the designated url
+    * emits a FormData object composed of images being uploaded 
+    * batched submissions will emit this event per batch
+* **upload-image-success** **-** [FormData, Response]
+    * event is called after s successful automatic upload to the designated url
+    * emits a FormData object composed of images being uploaded along with the success response object from the server
+* **upload-image-failure** **-** [FormData, Response] 
+    * event is called after s failed automatic upload to the designated url
+    * emits a FormData object composed of images being uploaded along with the error response object from the server
+
 
 ## License
 This project is licensed under the [MIT](http://vjpr.mit-license.org) License.

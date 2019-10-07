@@ -1,5 +1,20 @@
+<<<<<<< HEAD
 #### 1.1.3
  * Added images uploading alternative
+=======
+#### 1.1.5
+ * improved documentation
+ * ability to disable automatic uploading (allowing for manual uploads)
+ * added image loaded event (called after image fle has been read)
+    * upload-image-loaded
+ * added submit event (called after end-user has clicked on "submit" action)
+    * upload-image-submit
+ * added image clicked event (called when an image is clicked)
+    * upload-image-clicked
+ * added image removed event (called when an image has been removed)
+    * upload-image-removed
+
+>>>>>>> 32f2d8944ad249298b8d61d975e16f5f322ff050
 #### 1.1.2
 
  * README & LICENSE adjustments.
