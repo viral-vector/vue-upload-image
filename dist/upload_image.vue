@@ -47,6 +47,11 @@
               required: false,
               default: {}
             },
+            headers: {
+              type: Object,
+              required: false,
+              default: {}
+            },
             disable_upload: {
                 type: Boolean,
                 required: false,
@@ -146,7 +151,9 @@
                 keys.forEach((key) => {
                     this.$set(this.files[key], 'attempted', true);
                 });
-                this.$http.post(this.url, formData).then((response) => {
+                this.$http.post(this.url, formData, {
+                    headers: this.headers
+                }).then((response) => {
                     keys.forEach((key) => {
                         this.$set(this.files[key], 'uploaded', true);
                         this.total++;
