@@ -11,7 +11,7 @@
                     <img v-bind:src="image[key]" v-bind:class="{ 'show': image[key]}">
                 </div>
             </div>
-            <input type="file" v-bind:id="'upload_image_form__input--' + input_id" hidden multiple/>
+            <input type="file" v-bind:id="'upload_image_form__input--' + input_id" hidden multiple accept="image/*"/>
             <div>
                 <button type="submit"
                         v-bind:class="button_class"
